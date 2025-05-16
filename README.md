@@ -1,6 +1,7 @@
 # GBS-based-population-structure-analysis-of-Ross-Sea-fish
+### Set paths and load data
 setwd("/Users/sepva552/Desktop/GBS/CHW.60")
-
+##### Load required packages
 library(vcfR)
 library(adegenet)
 library(StAMPP)
@@ -23,11 +24,16 @@ library(dartR)
 library(pegas)
 
 ##############################
+# Load VCF and population data
 snp_vcf2 = read.vcfR("./final.recode.vcf")
 pop.data2 = read.table("./CHW_pop.txt", header = F)
+# Convert to genlight object
 gl.snp2 <- vcfR2genlight(snp_vcf2)
 pop(gl.snp2) <- rep(pop.data2$V2)
+#### Principal Component Analysis
 snp.pca2 <- glPca(gl.snp2, nf = 10)
+
+# Save PCA results
 snp.pca.scores2 <- as.data.frame(snp.pca2$scores)
 snp.pca.scores2$pop <- pop(gl.snp2)
 write.table(snp.pca.scores2, "./CHW_PCA.txt", sep = "\t")
